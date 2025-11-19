@@ -28,7 +28,6 @@ project.lock.json
 project.fragment.lock.json
 
 # EF Core Migrations (DB files)
-*.db
 *.sqlite
 *.db-journal
 

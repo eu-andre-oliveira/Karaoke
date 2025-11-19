@@ -365,10 +365,12 @@ public class PlaylistController : Controller
             return Json(new List<MusicaBibliotecaSearchViewModel>());
         }
 
+        term = term.Trim();
+
         var results = await _context.MusicasBiblioteca
-            .Where(m => !m.Bloqueada && 
-                       (m.Titulo.Contains(term) || 
-                        (m.Artista != null && m.Artista.Contains(term))))
+            .Where(m => !m.Bloqueada &&
+                (EF.Functions.Like(m.Titulo.ToLower(), $"%{term.ToLower()}%") ||
+                 (m.Artista != null && EF.Functions.Like(m.Artista.ToLower(), $"%{term.ToLower()}%"))))
             .OrderByDescending(m => m.QuantidadeUsos)
             .Take(10)
             .Select(m => new MusicaBibliotecaSearchViewModel

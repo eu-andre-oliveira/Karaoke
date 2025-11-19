@@ -1,25 +1,24 @@
-Karaoke.Web\wwwroot\css\site.css
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 /* Cores quentes com degradê para o escuro - CORES MAIS SUAVES */
@@ -27,8 +26,8 @@ body {
     --gradient-start: #ff6b35;
     --gradient-mid: #f7931e;
     --gradient-end: #c1121f;
-    --dark-bg: #2a2a2a;        /* Era #1a1a1a - agora mais suave */
-    --darker-bg: #1f1f1f;      /* Era #0d0d0d - agora mais suave */
+    --dark-bg: #2a2a2a; /* Era #1a1a1a - agora mais suave */
+    --darker-bg: #1f1f1f; /* Era #0d0d0d - agora mais suave */
 }
 
 body {
@@ -56,10 +55,10 @@ body {
     transition: all 0.3s ease;
 }
 
-.btn-nav-register:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
+    .btn-nav-register:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
 
 /* Hero Section */
 .hero-section {
@@ -77,24 +76,24 @@ body {
     animation: fadeInUp 0.6s ease-out;
 }
 
-.auth-card .form-control {
-    border-radius: 15px; /* Mais arredondado */
-    padding: 0.75rem;
-    border: 2px solid #e9ecef;
-    transition: all 0.3s ease;
-}
+    .auth-card .form-control {
+        border-radius: 15px; /* Mais arredondado */
+        padding: 0.75rem;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
 
-.auth-card .form-control:focus {
-    border-color: var(--gradient-start);
-    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
-}
+        .auth-card .form-control:focus {
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
 
-.auth-card .input-group-text {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    color: white;
-    border: none;
-    border-radius: 15px 0 0 15px; /* Mais arredondado */
-}
+    .auth-card .input-group-text {
+        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        color: white;
+        border: none;
+        border-radius: 15px 0 0 15px; /* Mais arredondado */
+    }
 
 .gradient-text {
     background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
@@ -112,10 +111,10 @@ body {
     background: white;
 }
 
-.playlist-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3) !important;
-}
+    .playlist-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3) !important;
+    }
 
 .card-header-gradient {
     background: linear-gradient(135deg, var(--gradient-end) 0%, var(--gradient-start) 100%);
@@ -134,11 +133,11 @@ body {
     border-radius: 15px; /* Mais arredondado */
 }
 
-.btn-gradient:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
-    color: white;
-}
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+        color: white;
+    }
 
 .bg-gradient-custom {
     background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
@@ -188,10 +187,10 @@ body {
     margin: 0.2rem 0.5rem;
 }
 
-.dropdown-item:hover {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    color: white;
-}
+    .dropdown-item:hover {
+        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        color: white;
+    }
 
 /* Animações */
 @keyframes fadeInUp {
@@ -199,6 +198,7 @@ body {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -218,18 +218,18 @@ body {
     background: white;
 }
 
-.musica-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.25) !important;
-}
+    .musica-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.25) !important;
+    }
 
-.musica-card .card-img-top {
-    transition: transform 0.3s ease;
-}
+    .musica-card .card-img-top {
+        transition: transform 0.3s ease;
+    }
 
-.musica-card:hover .card-img-top {
-    transform: scale(1.05);
-}
+    .musica-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
 
 /* Alertas customizados */
 .alert {
@@ -245,10 +245,10 @@ body {
     transition: all 0.3s ease;
 }
 
-.musica-item:hover {
-    background-color: #f8f9fa;
-    transform: translateX(5px);
-}
+    .musica-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
 
 /* Busca biblioteca compartilhada */
 #searchResults .list-group-item {
@@ -257,11 +257,11 @@ body {
     border: 1px solid #dee2e6;
 }
 
-#searchResults .list-group-item:hover {
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(193, 18, 31, 0.1) 100%);
-    border-color: var(--gradient-start);
-    transform: translateX(5px);
-}
+    #searchResults .list-group-item:hover {
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(193, 18, 31, 0.1) 100%);
+        border-color: var(--gradient-start);
+        transform: translateX(5px);
+    }
 
 /* Form controls */
 .form-control, .form-select {
@@ -291,6 +291,7 @@ body {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -309,8 +310,8 @@ body {
         padding: 2rem 0;
         border-radius: 0 0 40px 40px;
     }
-    
-    .hero-section h1 {
-        font-size: 2rem;
-    }
+
+        .hero-section h1 {
+            font-size: 2rem;
+        }
 }

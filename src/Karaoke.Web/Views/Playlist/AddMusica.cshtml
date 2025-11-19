@@ -21,10 +21,13 @@
                         <input type="text" id="searchBiblioteca" class="form-control form-control-lg" 
                                placeholder="Digite o nome da música ou artista..." autocomplete="off" />
                         <div id="searchResults" class="list-group mt-2" style="display: none;"></div>
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> Clique em uma música para preencher os campos automaticamente
+                        </small>
                     </div>
 
                     <div class="text-center mb-3">
-                        <span class="badge bg-secondary">OU</span>
+                        <span class="badge bg-secondary">OU preencha manualmente</span>
                     </div>
 
                     <!-- Formulário Manual -->
@@ -38,7 +41,7 @@
                             <label asp-for="Titulo" class="form-label fw-bold">
                                 <i class="bi bi-music-note text-danger"></i> @Html.DisplayNameFor(m => m.Titulo)
                             </label>
-                            <input asp-for="Titulo" class="form-control form-control-lg" placeholder="Ex: Evidências" />
+                            <input asp-for="Titulo" id="tituloInput" class="form-control form-control-lg" placeholder="Ex: Evidências" />
                             <span asp-validation-for="Titulo" class="text-danger small"></span>
                         </div>
 
@@ -47,7 +50,7 @@
                                 <label asp-for="Artista" class="form-label fw-bold">
                                     <i class="bi bi-person text-primary"></i> @Html.DisplayNameFor(m => m.Artista)
                                 </label>
-                                <input asp-for="Artista" class="form-control" placeholder="Ex: Chitãozinho & Xororó" />
+                                <input asp-for="Artista" id="artistaInput" class="form-control" placeholder="Ex: Chitãozinho & Xororó" />
                                 <span asp-validation-for="Artista" class="text-danger small"></span>
                             </div>
 
@@ -64,7 +67,7 @@
                             <label asp-for="UrlStreaming" class="form-label fw-bold">
                                 <i class="bi bi-link-45deg text-warning"></i> @Html.DisplayNameFor(m => m.UrlStreaming)
                             </label>
-                            <input asp-for="UrlStreaming" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+                            <input asp-for="UrlStreaming" id="urlInput" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
                             <span asp-validation-for="UrlStreaming" class="text-danger small"></span>
                         </div>
 
@@ -72,7 +75,7 @@
                             <label asp-for="ThumbnailUrl" class="form-label fw-bold">
                                 <i class="bi bi-image text-info"></i> @Html.DisplayNameFor(m => m.ThumbnailUrl)
                             </label>
-                            <input asp-for="ThumbnailUrl" class="form-control" placeholder="https://..." />
+                            <input asp-for="ThumbnailUrl" id="thumbnailInput" class="form-control" placeholder="https://..." />
                             <span asp-validation-for="ThumbnailUrl" class="text-danger small"></span>
                         </div>
 
@@ -97,7 +100,13 @@
         let searchTimeout;
         const searchInput = document.getElementById('searchBiblioteca');
         const searchResults = document.getElementById('searchResults');
+        
+        // Campos do formulário
+        const tituloInput = document.getElementById('tituloInput');
+        const artistaInput = document.getElementById('artistaInput');
         const cantorInput = document.getElementById('cantorInput');
+        const urlInput = document.getElementById('urlInput');
+        const thumbnailInput = document.getElementById('thumbnailInput');
 
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
@@ -113,7 +122,8 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.length === 0) {
-                            searchResults.style.display = 'none';
+                            searchResults.innerHTML = '<div class="list-group-item text-muted">Nenhuma música encontrada</div>';
+                            searchResults.style.display = 'block';
                             return;
                         }
 
@@ -129,12 +139,12 @@
                                         ${musica.artista ? `<br><small class="text-muted">${musica.artista}</small>` : ''}
                                         <br><small class="badge bg-info">${musica.quantidadeUsos} uso(s)</small>
                                     </div>
-                                    <i class="bi bi-plus-circle text-success"></i>
+                                    <i class="bi bi-arrow-right-circle text-success fs-4"></i>
                                 </div>
                             `;
                             item.onclick = (e) => {
                                 e.preventDefault();
-                                addFromBiblioteca(musica);
+                                preencherFormulario(musica);
                             };
                             searchResults.appendChild(item);
                         });
@@ -143,28 +153,33 @@
             }, 300);
         });
 
-        function addFromBiblioteca(musica) {
-            const cantor = cantorInput.value || prompt('Quem vai cantar esta música?');
-            if (!cantor) return;
-
-            fetch('@Url.Action("AddMusicaFromBiblioteca")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                },
-                body: JSON.stringify({
-                    bibliotecaId: musica.id,
-                    playlistId: @Model.PlaylistId,
-                    cantor: cantor
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '@Url.Action("Details", new { id = Model.PlaylistId })';
-                }
+        function preencherFormulario(musica) {
+            // Preenche os campos do formulário
+            tituloInput.value = musica.titulo;
+            artistaInput.value = musica.artista || '';
+            urlInput.value = musica.urlStreaming;
+            thumbnailInput.value = musica.thumbnailUrl || '';
+            
+            // Foca no campo do cantor para o usuário preencher
+            cantorInput.focus();
+            
+            // Esconde os resultados
+            searchResults.style.display = 'none';
+            searchInput.value = '';
+            
+            // Scroll suave para o formulário
+            document.getElementById('addMusicaForm').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
             });
+            
+            // Adiciona um efeito visual de destaque
+            const formElement = document.getElementById('addMusicaForm');
+            formElement.style.transition = 'background-color 0.5s';
+            formElement.style.backgroundColor = 'rgba(255, 107, 53, 0.1)';
+            setTimeout(() => {
+                formElement.style.backgroundColor = 'transparent';
+            }, 1000);
         }
 
         // Esconder resultados ao clicar fora
@@ -172,6 +187,13 @@
             if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
                 searchResults.style.display = 'none';
             }
+        });
+
+        // Limpar busca ao focar nos campos do formulário
+        [tituloInput, artistaInput, urlInput].forEach(input => {
+            input.addEventListener('focus', () => {
+                searchResults.style.display = 'none';
+            });
         });
     </script>
 }
