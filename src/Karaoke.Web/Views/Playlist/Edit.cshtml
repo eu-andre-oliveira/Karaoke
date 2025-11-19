@@ -1,0 +1,64 @@
+@model Karaoke.Web.Models.EditPlaylistViewModel
+@{
+    ViewData["Title"] = "Editar Playlist";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header-gradient text-center py-4">
+                    <i class="bi bi-pencil-square display-4 text-white mb-2"></i>
+                    <h2 class="text-white mb-0">Editar Playlist</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Nome" class="form-label fw-bold">
+                                <i class="bi bi-pencil text-warning"></i> @Html.DisplayNameFor(m => m.Nome)
+                            </label>
+                            <input asp-for="Nome" class="form-control form-control-lg" />
+                            <span asp-validation-for="Nome" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Descricao" class="form-label fw-bold">
+                                <i class="bi bi-card-text text-info"></i> @Html.DisplayNameFor(m => m.Descricao)
+                            </label>
+                            <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Descricao" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-gradient btn-lg flex-fill">
+                                <i class="bi bi-check-circle"></i> Salvar Alterações
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+
+                    <hr class="my-4" />
+
+                    <div class="text-center">
+                        <h5 class="text-danger mb-3">Zona de Perigo</h5>
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('Tem certeza que deseja excluir esta playlist? Esta ação não pode ser desfeita!');">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Excluir Playlist
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

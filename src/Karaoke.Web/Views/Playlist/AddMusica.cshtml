@@ -1,0 +1,177 @@
+@model Karaoke.Web.Models.AddMusicaViewModel
+@{
+    ViewData["Title"] = "Adicionar Música";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header-gradient text-center py-4">
+                    <i class="bi bi-music-note-beamed display-4 text-white mb-2"></i>
+                    <h2 class="text-white mb-0">Adicionar Música</h2>
+                    <p class="text-white-50 mb-0">em @Model.PlaylistNome</p>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Busca na Biblioteca -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-search text-primary"></i> Buscar na Biblioteca Compartilhada
+                        </label>
+                        <input type="text" id="searchBiblioteca" class="form-control form-control-lg" 
+                               placeholder="Digite o nome da música ou artista..." autocomplete="off" />
+                        <div id="searchResults" class="list-group mt-2" style="display: none;"></div>
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <span class="badge bg-secondary">OU</span>
+                    </div>
+
+                    <!-- Formulário Manual -->
+                    <form asp-action="AddMusica" method="post" id="addMusicaForm">
+                        <input type="hidden" asp-for="PlaylistId" />
+                        <input type="hidden" asp-for="PlaylistNome" />
+                        
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Titulo" class="form-label fw-bold">
+                                <i class="bi bi-music-note text-danger"></i> @Html.DisplayNameFor(m => m.Titulo)
+                            </label>
+                            <input asp-for="Titulo" class="form-control form-control-lg" placeholder="Ex: Evidências" />
+                            <span asp-validation-for="Titulo" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Artista" class="form-label fw-bold">
+                                    <i class="bi bi-person text-primary"></i> @Html.DisplayNameFor(m => m.Artista)
+                                </label>
+                                <input asp-for="Artista" class="form-control" placeholder="Ex: Chitãozinho & Xororó" />
+                                <span asp-validation-for="Artista" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Cantor" class="form-label fw-bold">
+                                    <i class="bi bi-person-lines-fill text-success"></i> @Html.DisplayNameFor(m => m.Cantor)
+                                </label>
+                                <input asp-for="Cantor" id="cantorInput" class="form-control" placeholder="Quem vai cantar?" />
+                                <span asp-validation-for="Cantor" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UrlStreaming" class="form-label fw-bold">
+                                <i class="bi bi-link-45deg text-warning"></i> @Html.DisplayNameFor(m => m.UrlStreaming)
+                            </label>
+                            <input asp-for="UrlStreaming" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+                            <span asp-validation-for="UrlStreaming" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ThumbnailUrl" class="form-label fw-bold">
+                                <i class="bi bi-image text-info"></i> @Html.DisplayNameFor(m => m.ThumbnailUrl)
+                            </label>
+                            <input asp-for="ThumbnailUrl" class="form-control" placeholder="https://..." />
+                            <span asp-validation-for="ThumbnailUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-gradient btn-lg flex-fill">
+                                <i class="bi bi-plus-circle"></i> Adicionar Música
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.PlaylistId" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let searchTimeout;
+        const searchInput = document.getElementById('searchBiblioteca');
+        const searchResults = document.getElementById('searchResults');
+        const cantorInput = document.getElementById('cantorInput');
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const term = this.value.trim();
+
+            if (term.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`@Url.Action("SearchMusicaBiblioteca")?term=${encodeURIComponent(term)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            searchResults.style.display = 'none';
+                            return;
+                        }
+
+                        searchResults.innerHTML = '';
+                        data.forEach(musica => {
+                            const item = document.createElement('a');
+                            item.href = '#';
+                            item.className = 'list-group-item list-group-item-action';
+                            item.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${musica.titulo}</strong>
+                                        ${musica.artista ? `<br><small class="text-muted">${musica.artista}</small>` : ''}
+                                        <br><small class="badge bg-info">${musica.quantidadeUsos} uso(s)</small>
+                                    </div>
+                                    <i class="bi bi-plus-circle text-success"></i>
+                                </div>
+                            `;
+                            item.onclick = (e) => {
+                                e.preventDefault();
+                                addFromBiblioteca(musica);
+                            };
+                            searchResults.appendChild(item);
+                        });
+                        searchResults.style.display = 'block';
+                    });
+            }, 300);
+        });
+
+        function addFromBiblioteca(musica) {
+            const cantor = cantorInput.value || prompt('Quem vai cantar esta música?');
+            if (!cantor) return;
+
+            fetch('@Url.Action("AddMusicaFromBiblioteca")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    bibliotecaId: musica.id,
+                    playlistId: @Model.PlaylistId,
+                    cantor: cantor
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '@Url.Action("Details", new { id = Model.PlaylistId })';
+                }
+            });
+        }
+
+        // Esconder resultados ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+    </script>
+}

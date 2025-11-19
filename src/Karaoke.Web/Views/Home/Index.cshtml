@@ -1,8 +1,115 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Karaoke.Web.Models.PlaylistCardViewModel>
+@{
+    ViewData["Title"] = "Minhas Playlists";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-white mb-3">🎤 Minhas Playlists de Karaoke</h1>
+                <p class="lead text-white-50">Gerencie suas músicas favoritas e organize suas apresentações</p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <a asp-controller="Playlist" asp-action="Create" class="btn btn-light btn-lg shadow-sm">
+                    <i class="bi bi-plus-circle"></i> Nova Playlist
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center py-5">
+                <div class="empty-state">
+                    <i class="bi bi-music-note-list display-1 text-muted mb-3"></i>
+                    <h3 class="text-muted">Nenhuma playlist criada</h3>
+                    <p class="text-muted">Comece criando sua primeira playlist de karaoke!</p>
+                    <a asp-controller="Playlist" asp-action="Create" class="btn btn-gradient btn-lg mt-3">
+                        <i class="bi bi-plus-circle"></i> Criar Primeira Playlist
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var playlist in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card playlist-card h-100 shadow-sm">
+                        <div class="card-header-gradient">
+                            <h5 class="card-title text-white mb-0">
+                                <i class="bi bi-music-note-beamed"></i> @playlist.Nome
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(playlist.Descricao))
+                            {
+                                <p class="card-text text-muted small mb-3">@playlist.Descricao</p>
+                            }
+                            
+                            <div class="playlist-info mb-3">
+                                <span class="badge bg-gradient-custom">
+                                    <i class="bi bi-music-note-list"></i> @playlist.TotalMusicas música(s)
+                                </span>
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-calendar"></i> @playlist.DataCriacao.ToString("dd/MM/yyyy")
+                                </span>
+                            </div>
+
+                            @if (playlist.PrimeirasMusicasTitulos.Any())
+                            {
+                                <div class="songs-preview">
+                                    <p class="small text-muted mb-2"><strong>Músicas:</strong></p>
+                                    <ul class="list-unstyled small">
+                                        @foreach (var musica in playlist.PrimeirasMusicasTitulos)
+                                        {
+                                            <li class="mb-1">
+                                                <i class="bi bi-disc text-danger"></i> @musica
+                                            </li>
+                                        }
+                                        @if (playlist.TotalMusicas > 3)
+                                        {
+                                            <li class="text-muted fst-italic">
+                                                + @(playlist.TotalMusicas - 3) mais...
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Playlist" asp-action="Details" asp-route-id="@playlist.Id" class="btn btn-gradient flex-fill">
+                                    <i class="bi bi-play-circle"></i> Abrir
+                                </a>
+                                <a asp-controller="Playlist" asp-action="Edit" asp-route-id="@playlist.Id" class="btn btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-controller="Playlist" asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir esta playlist?');">
+                                    <input type="hidden" name="id" value="@playlist.Id" />
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>

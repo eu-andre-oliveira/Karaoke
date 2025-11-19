@@ -1,3 +1,4 @@
+Karaoke.Web\wwwroot\css\site.css
 html {
   font-size: 14px;
 }
@@ -19,4 +20,297 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* Cores quentes com degradê para o escuro - CORES MAIS SUAVES */
+:root {
+    --gradient-start: #ff6b35;
+    --gradient-mid: #f7931e;
+    --gradient-end: #c1121f;
+    --dark-bg: #2a2a2a;        /* Era #1a1a1a - agora mais suave */
+    --darker-bg: #1f1f1f;      /* Era #0d0d0d - agora mais suave */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Navbar com gradiente */
+.navbar-gradient {
+    background: linear-gradient(90deg, var(--gradient-end) 0%, var(--gradient-mid) 50%, var(--gradient-start) 100%);
+    border-radius: 0 0 20px 20px; /* Bordas arredondadas */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-nav-register {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px; /* Mais arredondado */
+    padding: 0.5rem 1.5rem !important;
+    transition: all 0.3s ease;
+}
+
+.btn-nav-register:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--gradient-end) 0%, var(--gradient-mid) 50%, var(--gradient-start) 100%);
+    padding: 3rem 0;
+    border-radius: 0 0 60px 60px; /* Mais arredondado */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Cards de Autenticação */
+.auth-card {
+    border: none;
+    border-radius: 25px; /* Mais arredondado */
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.auth-card .form-control {
+    border-radius: 15px; /* Mais arredondado */
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.auth-card .form-control:focus {
+    border-color: var(--gradient-start);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+.auth-card .input-group-text {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: white;
+    border: none;
+    border-radius: 15px 0 0 15px; /* Mais arredondado */
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Cards de Playlist */
+.playlist-card {
+    border: none;
+    border-radius: 20px; /* Mais arredondado */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    background: white;
+}
+
+.playlist-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3) !important;
+}
+
+.card-header-gradient {
+    background: linear-gradient(135deg, var(--gradient-end) 0%, var(--gradient-start) 100%);
+    padding: 1rem 1.25rem;
+    border: none;
+}
+
+/* Botões com gradiente */
+.btn-gradient {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    border-radius: 15px; /* Mais arredondado */
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+    color: white;
+}
+
+.bg-gradient-custom {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: white;
+    border: none;
+}
+
+/* Estado vazio */
+.empty-state {
+    padding: 3rem;
+    background: white;
+    border-radius: 25px; /* Mais arredondado */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Preview de músicas */
+.songs-preview {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 15px; /* Mais arredondado */
+    border-left: 4px solid var(--gradient-start);
+}
+
+/* Footer */
+.footer {
+    background: var(--darker-bg) !important;
+    border-top: 3px solid var(--gradient-start);
+}
+
+/* Badges */
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+    border-radius: 12px; /* Mais arredondado */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    border-radius: 15px; /* Mais arredondado */
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+    transition: all 0.2s ease;
+    border-radius: 10px;
+    margin: 0.2rem 0.5rem;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: white;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.playlist-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Cards de Música */
+.musica-card {
+    border: none;
+    border-radius: 20px; /* Mais arredondado */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    background: white;
+}
+
+.musica-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.25) !important;
+}
+
+.musica-card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.musica-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Alertas customizados */
+.alert {
+    border-radius: 20px; /* Mais arredondado */
+    border: none;
+    animation: slideInDown 0.4s ease-out;
+}
+
+/* Lista de músicas */
+.musica-item {
+    border-radius: 15px !important; /* Mais arredondado */
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.musica-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* Busca biblioteca compartilhada */
+#searchResults .list-group-item {
+    border-radius: 12px !important; /* Mais arredondado */
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+}
+
+#searchResults .list-group-item:hover {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(193, 18, 31, 0.1) 100%);
+    border-color: var(--gradient-start);
+    transform: translateX(5px);
+}
+
+/* Form controls */
+.form-control, .form-select {
+    border-radius: 12px; /* Mais arredondado */
+}
+
+/* Buttons */
+.btn {
+    border-radius: 12px; /* Mais arredondado */
+}
+
+.btn-sm {
+    border-radius: 10px;
+}
+
+.btn-lg {
+    border-radius: 15px;
+}
+
+/* Cards gerais */
+.card {
+    border-radius: 20px; /* Mais arredondado */
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efeito blur para músicas cantadas */
+.blurred {
+    filter: blur(2px) grayscale(0.7) opacity(0.6);
+    transition: filter 0.3s;
+}
+
+/* Responsividade extra */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+        border-radius: 0 0 40px 40px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
 }
