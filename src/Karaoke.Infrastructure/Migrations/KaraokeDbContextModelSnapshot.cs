@@ -90,6 +90,111 @@ namespace Karaoke.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Karaoke.Domain.Entities.Evento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DataEncerramento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HostUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Modo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.HasIndex("HostUserId");
+
+                    b.ToTable("Eventos");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.ItemFila", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AdicionadoEm")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Artista")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EventoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("FinalizadoEm")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("IniciadoEm")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("MusicaBibliotecaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ParticipanteId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UrlStreaming")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VideoId")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipanteId");
+
+                    b.HasIndex("EventoId", "Status");
+
+                    b.ToTable("ItensFila");
+                });
+
             modelBuilder.Entity("Karaoke.Domain.Entities.Musica", b =>
                 {
                     b.Property<int>("Id")
@@ -189,6 +294,38 @@ namespace Karaoke.Infrastructure.Migrations
                     b.HasIndex("Titulo");
 
                     b.ToTable("MusicasBiblioteca");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.Participante", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataEntrada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EventoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventoId");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("Participantes");
                 });
 
             modelBuilder.Entity("Karaoke.Domain.Entities.Playlist", b =>
@@ -348,6 +485,36 @@ namespace Karaoke.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Karaoke.Domain.Entities.Evento", b =>
+                {
+                    b.HasOne("Karaoke.Domain.Entities.ApplicationUser", "Host")
+                        .WithMany()
+                        .HasForeignKey("HostUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.ItemFila", b =>
+                {
+                    b.HasOne("Karaoke.Domain.Entities.Evento", "Evento")
+                        .WithMany("Itens")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Karaoke.Domain.Entities.Participante", "Participante")
+                        .WithMany("Itens")
+                        .HasForeignKey("ParticipanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Evento");
+
+                    b.Navigation("Participante");
+                });
+
             modelBuilder.Entity("Karaoke.Domain.Entities.Musica", b =>
                 {
                     b.HasOne("Karaoke.Domain.Entities.MusicaBiblioteca", "MusicaBiblioteca")
@@ -375,6 +542,17 @@ namespace Karaoke.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("CriadoPor");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.Participante", b =>
+                {
+                    b.HasOne("Karaoke.Domain.Entities.Evento", "Evento")
+                        .WithMany("Participantes")
+                        .HasForeignKey("EventoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evento");
                 });
 
             modelBuilder.Entity("Karaoke.Domain.Entities.Playlist", b =>
@@ -442,6 +620,18 @@ namespace Karaoke.Infrastructure.Migrations
             modelBuilder.Entity("Karaoke.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Playlists");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.Evento", b =>
+                {
+                    b.Navigation("Itens");
+
+                    b.Navigation("Participantes");
+                });
+
+            modelBuilder.Entity("Karaoke.Domain.Entities.Participante", b =>
+                {
+                    b.Navigation("Itens");
                 });
 
             modelBuilder.Entity("Karaoke.Domain.Entities.Playlist", b =>

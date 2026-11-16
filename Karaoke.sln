@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karaoke.Web", "src\Karaoke.Web\Karaoke.Web.csproj", "{61C3FF6C-5BF8-6232-7C35-0496861690C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karaoke.Api", "src\Karaoke.Api\Karaoke.Api.csproj", "{61C3FF6C-5BF8-6232-7C35-0496861690C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject

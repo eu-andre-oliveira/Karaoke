@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Restaura primeiro só com os .csproj: o cache de pacotes sobrevive a mudanças de código.
+COPY nuget.config ./
+COPY src/Karaoke.Domain/Karaoke.Domain.csproj src/Karaoke.Domain/
+COPY src/Karaoke.Application/Karaoke.Application.csproj src/Karaoke.Application/
+COPY src/Karaoke.Infrastructure/Karaoke.Infrastructure.csproj src/Karaoke.Infrastructure/
+COPY src/Karaoke.Api/Karaoke.Api.csproj src/Karaoke.Api/
+RUN dotnet restore src/Karaoke.Api/Karaoke.Api.csproj
+
+COPY src/Karaoke.Domain src/Karaoke.Domain
+COPY src/Karaoke.Application src/Karaoke.Application
+COPY src/Karaoke.Infrastructure src/Karaoke.Infrastructure
+COPY src/Karaoke.Api src/Karaoke.Api
+RUN dotnet publish src/Karaoke.Api/Karaoke.Api.csproj -c Release -o /app --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+COPY --from=build /app ./
+
+ENV ASPNETCORE_URLS=http://+:8080 \
+    ASPNETCORE_ENVIRONMENT=Production
+EXPOSE 8080
+
+# A imagem já traz um usuário sem privilégios (APP_UID).
+USER $APP_UID
+ENTRYPOINT ["dotnet", "Karaoke.Api.dll"]

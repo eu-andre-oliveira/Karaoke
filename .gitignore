@@ -47,3 +47,11 @@ node_modules/
 .gitignore
 *.db-wal
 *.db-shm
+
+# Karaoke
+*.db
+*.db-shm
+*.db-wal
+.env
+dist/
+*.tsbuildinfo
