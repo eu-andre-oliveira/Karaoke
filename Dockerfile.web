@@ -1,0 +1,14 @@
+# syntax=docker/dockerfile:1
+FROM node:24-alpine AS build
+WORKDIR /web
+
+COPY src/karaoke-web/package.json src/karaoke-web/package-lock.json ./
+RUN npm ci
+
+COPY src/karaoke-web ./
+RUN npm run build
+
+FROM nginx:1.27-alpine AS runtime
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /web/dist /usr/share/nginx/html
+EXPOSE 80
