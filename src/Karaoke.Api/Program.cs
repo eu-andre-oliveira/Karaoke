@@ -126,7 +126,16 @@ using (var scope = app.Services.CreateScope())
     if (app.Configuration.GetValue("Database:AutoMigrate", true))
     {
         var db = scope.ServiceProvider.GetRequiredService<KaraokeDbContext>();
-        await db.Database.MigrateAsync();
+        if (provider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase))
+        {
+            await db.Database.MigrateAsync();
+        }
+        else
+        {
+            // As migrations foram geradas para Sqlite (tipos e autoincremento próprios).
+            // Em Postgres/SQL Server o esquema é criado direto do modelo atual.
+            await db.Database.EnsureCreatedAsync();
+        }
     }
 
     await SeedDataAsync(scope.ServiceProvider);
