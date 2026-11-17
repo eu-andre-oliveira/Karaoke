@@ -1,0 +1,8 @@
+# Exemplo de /etc/caddy/Caddyfile (Caddy instalado no host da VPS).
+# Troque pelo seu subdomínio. O Caddy emite e renova o certificado sozinho.
+# WebSocket (/hubs/) é repassado automaticamente.
+
+meukaraoke.duckdns.org {
+    encode gzip
+    reverse_proxy 127.0.0.1:8080
+}
